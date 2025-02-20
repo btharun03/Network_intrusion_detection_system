@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Intrusion Detection</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #plot { margin: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Real-Time Intrusion Detection System</h1>
+    <div id="plot"></div>
+
+    <script>
+        const trace = {
+            x: [],
+            y: [],
+            mode: 'lines+markers',
+            type: 'scatter',
+            name: 'Predictions',
+            marker: { color: 'blue' }
+        };
+
+        const data = [trace];
+
+        const layout = {
+            title: 'Predictions Over Time',
+            xaxis: {
+                title: 'Time',
+                type: 'date',
+                showgrid: true
+            },
+            yaxis: {
+                title: 'Prediction',
+                tickvals: [0, 1],
+                ticktext: ['Normal', 'Anomaly']
+            }
+        };
+
+        Plotly.newPlot('plot', data, layout);
+
+        function fetchPredictions() {
+            $.getJSON("/predict", function(data) {
+                const timeNow = new Date().toISOString();
+                const latestPrediction = data[0].prediction; 
+                trace.x.push(timeNow);
+                trace.y.push(latestPrediction);
+
+                if (trace.x.length > 20) {
+                    trace.x.shift(); 
+                    trace.y.shift(); 
+                }
+
+                Plotly.update('plot', {x: [trace.x], y: [trace.y]});
+            });
+        }
+
+        setInterval(fetchPredictions, 5000);
+
+        fetchPredictions();
+    </script>
+</body>
+</html>
