@@ -98,16 +98,6 @@ In the current digital landscape, cyber threats are increasingly sophisticated a
 
 ## Results
 
-### Confusion Matrix
-
-```
-Predicted
-        0     1
-Actual
-0 [   1   267 ]
-1 [   0  1392 ]
-```
-
 ### Metrics Table
 
 | Class | Precision | Recall | F1-Score | Support |
