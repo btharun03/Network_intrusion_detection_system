@@ -1,7 +1,127 @@
-This project introduces an innovative approach to network intrusion detection by integrating a real-time monitoring system with a machine learning-based stacking ensemble model. Unlike traditional NIDS, which often rely on singular or shallow models, this system combines multiple base models—including Gradient Boosting, XGB, LightGBM, CatBoost, and MLP—under a meta-classifier (XGB classifier) to improve both the accuracy and robustness of threat detection. By adopting a stacking ensemble, the model capitalizes on the strengths of various algorithms, allowing it to detect a wide range of anomalous behaviours with higher precision than standalone models.
-Another unique aspect of this project is its use of a web-based real-time monitoring interface, which allows security analysts to observe network traffic and detect potential threats as they occur. The front end visualizes crucial network metrics, using protocol features (such as connection duration, error rates, and bytes transferred) to provide granular insights into each data point. This live data visualization is not only valuable for intrusion detection but also for understanding network health over time.
+# Network Intrusion Detection System (NIDS) using Machine Learning
 
-Dataset: network_intrusion.csv
+This project aims to detect malicious activities in network traffic by using advanced machine learning techniques. It implements a real-time Network Intrusion Detection System (NIDS) with a stacking ensemble model and a user-friendly web interface for live monitoring.
 
-The dataset used for this project comprises various features essential for detecting network intrusions, containing both normal and anomalous records. Key attributes include network traffic details such as duration, protocol_type, service, flag, src_bytes, dst_bytes, and various error rates (e.g., serror_rate, srv_rerror_rate). Each record is classified as either "normal" or "anomaly."
-The dataset is structured to capture the characteristics of legitimate network connections as well as patterns associated with attacks, making it suitable for training machine learning models. The diversity of features helps the stacking ensemble model detect different types of intrusions, from frequent attacks to rare anomalies. Additionally, using this dataset enables the model to learn from diverse patterns and build a robust defence against a wide array of network threats.
+---
+
+## Abstract
+
+In the current digital landscape, cyber threats are increasingly sophisticated and frequent. Traditional security mechanisms like firewalls and antivirus tools are insufficient against modern attacks. This project proposes a Network Intrusion Detection System that integrates a machine learning-based stacking ensemble with a real-time monitoring interface. The solution combines base models (XGBoost, LightGBM, CatBoost, SVM, MLP, ANN, GRU) under a meta-classifier (XGBoost) to detect and respond to network anomalies with high accuracy.
+
+---
+
+## Key Features
+
+* Stacking ensemble classifier for enhanced accuracy.
+* Real-time intrusion monitoring through a web interface.
+* Visual analytics for traffic and prediction results.
+* Interactive charts using Plotly.
+
+---
+
+## Objectives
+
+* Design and implement a ML-based NIDS.
+* Detect anomalies from structured network data.
+* Improve classification using ensemble techniques.
+* Visualize detection results in real time.
+
+---
+
+## Dataset
+
+[NIDS_Dataset](https://www.kaggle.com/datasets/tharunbharathi03/network-intrusion-detection-system)
+
+* Contains normal and malicious traffic labeled by type.
+* Features include: `duration`, `protocol_type`, `service`, `flag`, `src_bytes`, `dst_bytes`, `error rates`, etc.
+* Cleaned, encoded, and balanced using SMOTE.
+
+---
+
+## System Architecture
+
+1. **Real Network Traffic**: Captured via sniffers/loggers.
+2. **Preprocessing**: Outlier removal, imputation, encoding.
+3. **Model Training**: ML models are trained on preprocessed data.
+4. **Meta-Model Creation**: A stacking classifier combines predictions from base models.
+5. **Real-Time Monitoring**: Incoming traffic is classified live.
+6. Feature Engineering
+7. Label Encoding and Standardization
+8. Base Models → Meta-Model → Prediction → Visualization
+
+![System Architecture](system_architecture.png)
+
+---
+
+## Models Implemented
+
+| Model       | Accuracy   |
+| ----------- | ---------- |
+| XGBoost     | 82.53%     |
+| LightGBM    | 83.80%     |
+| CatBoost    | 83.86%     |
+| SVM         | 77.59%     |
+| MLP         | 71.27%     |
+| ANN         | 67.35%     |
+| GRU         | 78.07%     |
+| **Stacked** | **83.92%** |
+
+**Best Model:** Stacked Ensemble (Meta-model: XGBoost)
+
+---
+
+## Performance Metrics
+
+* **Precision**: 0.84 (Attack)
+* **Recall**: 1.00 (Attack)
+* **F1-Score**: 0.91 (Attack)
+* **Cross-validated Accuracy**: 84.43%
+* **False Positives**: 267 (out of 1660 samples)
+
+---
+
+## Technologies Used
+
+* **Languages**: Python, HTML, JavaScript
+* **Libraries**: Scikit-learn, XGBoost, LightGBM, CatBoost, Keras, Pandas, NumPy, Matplotlib, Seaborn
+* **Tools**: Flask (for API), Plotly (for charting), SMOTE (for class imbalance)
+
+---
+
+## Web Interface
+
+* Flask-based API endpoint (`/predict`)
+* Plotly.js visualization for prediction over time
+* Generates test data and live plots results every 5 seconds
+
+---
+
+## Results
+
+### Confusion Matrix
+
+```
+Predicted
+        0     1
+Actual
+0 [   1   267 ]
+1 [   0  1392 ]
+```
+
+### Metrics Table
+
+| Class | Precision | Recall | F1-Score | Support |
+| ----- | --------- | ------ | -------- | ------- |
+| 0     | 1.00      | 0.00   | 0.01     | 268     |
+| 1     | 0.84      | 1.00   | 0.91     | 1392    |
+
+---
+
+## Future Work
+
+* Improve precision by tuning ensemble parameters.
+* Integrate threat intelligence feeds.
+* Use deep learning + unsupervised techniques.
+* Deploy in scalable cloud infrastructure.
+
+---
